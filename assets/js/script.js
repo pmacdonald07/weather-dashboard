@@ -99,7 +99,7 @@ var displayFutureWeather = function (response) {
     // for loop to create cards
     for (i = 0; i < 5; i++) {
         forecastCard = $("<div></div");
-        forecastCard.attr("class", "card col-2 text-light bg-primary");
+        forecastCard.attr("class", "card col-5 col-md-2 text-light bg-primary mb-3");
 
         //set card body
         cardBody = $("<div></div");
