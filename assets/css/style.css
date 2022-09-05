@@ -1,0 +1,21 @@
+.icon-img-lg {
+    height: 50px;
+    width: 50px;
+}
+
+p {
+    font-size: 16px;
+}
+
+h4 {
+    font-size: 20px;
+}
+
+.icon-img-sm {
+    height: 35px;
+    width: 35px;
+}
+
+.card {
+    background-color: $blue-700;
+}

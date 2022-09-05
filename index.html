@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="./assets/css/style.css"/>
+    <title>Document</title>
+</head>
+<body>
+    <div class="jumbotron">
+        <h1 class="display-4 text-center bg-primary bg-gradient text-light">Weather Dashboard</h1>
+    </div>
+    <main class="container">
+        <div class="row">
+            <section class="col-12 col-md-3" id="search-form">
+                <form class="pb-3 border-bottom border-dark" id="search-form">
+                    <label for="city-search" class="form-label fw-bold">Search for a City:</label>
+                    <input type="text" class="form-control p-2 mb-3 col" id="search-city" placeholder="Enter City">
+                    <button type="submit" class="btn btn-primary p-2 col-12" id="search-btn">Search</button>
+                </form>
+                <div class="modal" tabindex="-1" id="error-modal">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">Error</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <p>Please enter a city in the search bar.</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </section>
+            <section class="col-12 col-md-9 mt-4" id="weather-container">
+
+            </section>
+        </div>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="./assets/js/script.js"></script>
+</body>
+</html>
