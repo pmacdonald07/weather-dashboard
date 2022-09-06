@@ -6,7 +6,7 @@ var weatherContainerEl = $("#weather-container");
 var forecastCounter = 1;
 
 var getCity = function (search) {
-    var apiUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + search + "&limit=1&appid=" + apiKey;
+    var apiUrl = "https://api.openweathermap.org/geo/1.0/direct?q=" + search + "&limit=1&appid=" + apiKey;
     console.log(apiUrl);
     fetch(apiUrl)
         .then(function(response){
@@ -73,7 +73,7 @@ var displayCurrentWeather = function (response) {
         "Temp: " + response.current.temp+ "&#8457" + "<br>" + "<br>" +  
         "Wind: " + response.current.wind_speed + " MPH" + "<br>" + "<br>" + 
         "Humidity: " + response.current.humidity + "%" + "<br>" + "<br>" +
-        "UV Index: " + "<span class='uv-index' id='current-uvi'>" + response.current.uvi + "</span>");
+        "UV Index: " + "<span class='uv-index py-1 px-2 rounded' id='current-uvi'>" + response.current.uvi + "</span>");
 
     currentCityH2.append(currentTempEl);
 
@@ -140,11 +140,11 @@ var displayFutureWeather = function (response) {
 
 var checkUVI = function (uvi) {
     if (uvi < 3) {
-        $("#current-uvi").addClass("bg-success");
+        $("#current-uvi").addClass("bg-success text-light");
     } else if (uvi >= 3 && uvi < 6) {
-        $("#current-uvi").addClass("bg-warning");
+        $("#current-uvi").addClass("bg-warning text-light");
     } else if (uvi >= 6) {
-        $("#current-uvi").addClass("bg-danger");
+        $("#current-uvi").addClass("bg-danger text-light");
     };
 }
 
