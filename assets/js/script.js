@@ -1,25 +1,13 @@
+// establish global variables
 var searchButtonEl = $("#search-btn");
 var errorModalEl = $("#error-modal");
+var catchModalEl = $("#catch-modal");
 var apiKey = "a0aca8a89948154a4182dcecc780b513";
 let currentCity = "";
 var weatherContainerEl = $("#weather-container");
 var forecastCounter = 1;
+var cityArray = [];
 
-var getCity = function (search) {
-    var apiUrl = "https://api.openweathermap.org/geo/1.0/direct?q=" + search + "&limit=1&appid=" + apiKey;
-    console.log(apiUrl);
-    fetch(apiUrl)
-        .then(function(response){
-            if (response.ok) {
-                response.json().then(function(data) {
-                    console.log(data);
-                    var cityLat = data[0].lat;
-                    var cityLon = data[0].lon;
-                    getWeather(cityLat, cityLon);
-                })
-            }
-        })
-}
 
 var formSubmitHandler = function (event) {
     event.preventDefault();
@@ -27,23 +15,44 @@ var formSubmitHandler = function (event) {
     var city = $("#search-city").val().trim();
     if (city) {
         currentCity = city.toUpperCase();
+        $("#search-city").val("");
         getCity(city);
+        searchButtons (city);
+        saveCities(currentCity);
     } else {
        errorModalEl.modal("show");
     }
 }
 
-var getWeather = function (lat, lon) {
-    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly,alerts&units=imperial&appid=" + apiKey;
-    console.log(apiUrl);
+var getCity = function (search) {
+    var apiUrl = "https://api.openweathermap.org/geo/1.0/direct?q=" + search + "&limit=1&appid=" + apiKey;
     fetch(apiUrl)
         .then(function(response){
             if (response.ok) {
                 response.json().then(function(data) {
-                    console.log(data);
+                    var cityLat = data[0].lat;
+                    var cityLon = data[0].lon;
+                    getWeather(cityLat, cityLon);
+                })
+            }
+        })
+        .catch(function(error) {
+            catchModalEl.modal("show");
+        })
+}
+
+var getWeather = function (lat, lon) {
+    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly,alerts&units=imperial&appid=" + apiKey;
+    fetch(apiUrl)
+        .then(function(response){
+            if (response.ok) {
+                response.json().then(function(data) {
                     displayCurrentWeather(data);
                 })
             }
+        })
+        .catch(function(error) {
+            catchModalEl.modal("show");
         })
 }
 
@@ -85,6 +94,7 @@ var displayCurrentWeather = function (response) {
 
 var displayFutureWeather = function (response) {
     // add h3 for 5-day forecast
+    forecastCounter = 1;
     forecastH3 = $("<h3></h3");
     forecastH3.attr("class", "my-2");
     forecastH3.text("5-Day Forecast:");
@@ -137,7 +147,7 @@ var displayFutureWeather = function (response) {
     }
 }
 
-
+// check the current uvi and change color depending on the severity
 var checkUVI = function (uvi) {
     if (uvi < 3) {
         $("#current-uvi").addClass("bg-success text-light");
@@ -148,6 +158,53 @@ var checkUVI = function (uvi) {
     };
 }
 
+// generate a search button upon each search for ease of use
+var searchButtons = function (city) {
+    cityButton = $("<button></button>");
+    cityButton.text(city.toUpperCase());
+    cityButton.attr("class", "btn btn-primary p-2 col-12 mb-3");
+    cityButton.attr("type", "button");
+    cityButton.attr("data-city", city);
 
+    $("#city-buttons").append(cityButton);
+}
 
-$("#search-form").on("submit", formSubmitHandler)
+var buttonClickHandler = function (event) {
+    $("#weather-container").text("");
+    var target = $(event.target);
+    var city = target.attr("data-city");
+    if (city) {
+        currentCity = city.toUpperCase();
+        getCity(city);
+    }
+}
+
+// save searches to local storage and checks to see it that city is already in the array to avoid duplication
+var saveCities = function (city) {
+    if (cityArray.includes(city)) {
+        return;
+    } else {
+        cityArray.push(city);
+        localStorage.setItem("Cities", JSON.stringify(cityArray));
+    }
+}
+
+// load cities from local storage
+var loadCities = function () {
+    var localCities = localStorage.getItem("Cities");
+    localCities = JSON.parse(localCities);
+    cityArray = localCities;
+
+    if (cityArray === null) {
+        cityArray = [];
+    }
+
+    for (i = 0; i < cityArray.length; i++) {
+        searchButtons (cityArray[i]);
+    }
+}
+
+$("#search-form").on("submit", formSubmitHandler);
+$("#city-buttons").on("click", buttonClickHandler);
+
+loadCities();
