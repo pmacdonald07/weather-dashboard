@@ -79,7 +79,7 @@ var displayCurrentWeather = function (response) {
 
     // append to weather container
     weatherContainerEl.append(currentWeatherEl);
-    //checkUVI();
+    checkUVI(response.current.uvi);
     displayFutureWeather(response);
 }
 
@@ -137,17 +137,17 @@ var displayFutureWeather = function (response) {
     }
 }
 
-/*
-var checkUVI = function () {
-    if (response.current.uvi < 3) {
+
+var checkUVI = function (uvi) {
+    if (uvi < 3) {
         $("#current-uvi").addClass("bg-success");
-    } else if (response.current.uvi >= 3 && response.current.uvi < 6) {
+    } else if (uvi >= 3 && uvi < 6) {
         $("#current-uvi").addClass("bg-warning");
-    } else if (response.current.uvi >= 6) {
+    } else if (uvi >= 6) {
         $("#current-uvi").addClass("bg-danger");
-    }
+    };
 }
-*/
+
 
 
 $("#search-form").on("submit", formSubmitHandler)
